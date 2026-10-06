@@ -1,0 +1,32 @@
+/* ribo-ui — tokens de la casa RIBO: tipografía y paleta dorado/bronce,
+   oscuro por defecto y claro con [data-theme="light"] en <html>.
+   Contraste AA verificado en cada combinación texto/fondo. Un rubro que
+   necesite otra paleta redefine estas variables en su propio CSS,
+   después del @import de ribo-ui. */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+:root{color-scheme:dark;
+  --surface-0:#100E0B; --surface-1:#171310; --panel:#1E1A14; --panel-2:#262019;
+  --border:#362E22; --border-soft:#2A241C;
+  --text-primary:#F3ECDD; --text-secondary:#BCA98A; --text-muted:#8A7A61;
+  --accent:#C9A15E; --accent-soft:#332A1A; --accent-text:#E8CE94; --accent-ink:#1C1712;
+  --good:#5FA968; --warning:#D9862B; --serious:#C55F35; --critical:#D65D5A;
+  --good-bg:#16241A; --warning-bg:#2E200D; --serious-bg:#301B10; --critical-bg:#301412;
+  --good-text:#9AD6A0; --warning-text:#F0B571; --serious-text:#EFA37B; --critical-text:#F0938F; --progress-text:#E8CE94;
+}
+/* Modo claro — mismas variables, otra paleta. Se activa con
+   [data-theme="light"] en <html> (ver index.html + src/ui/theme.js).
+   Paleta RIBO ("casa"): dorado/bronce muestreado del logo de la marca,
+   sobre fondos cálidos casi negros (oscuro) / marfil (claro). Es el
+   punto de partida por defecto de cualquier rubro nuevo armado a partir
+   de este esqueleto — reemplazá estos 22 valores por la paleta propia
+   del rubro si corresponde (ver README, sección "Cambiar de paleta").
+   Contraste AA verificado en cada combinación texto/fondo. */
+:root[data-theme="light"]{color-scheme:light;
+  --surface-0:#F7F2E7; --surface-1:#FFFDF7; --panel:#FFFFFF; --panel-2:#F1E9D8;
+  --border:#E3D6B8; --border-soft:#EDE3CC;
+  --text-primary:#1C1712; --text-secondary:#5C5344; --text-muted:#8C8270;
+  --accent:#7C5A22; --accent-soft:#F3E6C4; --accent-text:#5E4419; --accent-ink:#FDF8EC;
+  --good:#2E7D3C; --warning:#96560F; --serious:#93431E; --critical:#932F2C;
+  --good-bg:#E6F2E7; --warning-bg:#FBEBD3; --serious-bg:#F8E1D3; --critical-bg:#F7DEDC;
+  --good-text:#1F5C2A; --warning-text:#6E3D0C; --serious-text:#6B2F14; --critical-text:#6B211F; --progress-text:#5E4419;
+}

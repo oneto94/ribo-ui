@@ -1,0 +1,35 @@
+{
+  "name": "ribo-ui",
+  "version": "1.0.0",
+  "description": "Base compartida de la casa RIBO: sistema de diseño, helpers comunes y lit-html.",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./ribo.css": "./src/ribo.css",
+    "./tokens.css": "./src/css/tokens.css",
+    "./base.css": "./src/css/base.css",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "ribo-check-escape": "bin/check-escape.mjs"
+  },
+  "files": [
+    "src",
+    "bin",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "lit-html": "^3.3.3"
+  },
+  "devDependencies": {
+    "rolldown": "^1.2.5"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}

@@ -1,0 +1,4 @@
+/* Punto de entrada del CSS de ribo-ui: tokens + componentes base.
+   En el CSS de un rubro: @import 'ribo-ui/ribo.css'; como primera línea. */
+@import './css/tokens.css';
+@import './css/base.css';

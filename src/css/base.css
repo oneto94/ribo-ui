@@ -1,0 +1,291 @@
+/* ribo-ui — componentes base (shell, sidebar, botones, paneles, tablas,
+   modales, calendario, responsive). Usa solo las variables de tokens.css. */
+*{box-sizing:border-box}
+body{margin:0;font-family:'Manrope','Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--surface-0);color:var(--text-primary);transition:background .15s ease,color .15s ease}
+button,input,select,textarea{font-family:inherit;color:inherit}
+a{color:inherit}
+
+/* minmax(0,1fr) y no 1fr: un 1fr nunca se achica por debajo del contenido
+   más ancho (tabla, calendario, fila de botones), así que en un celular
+   main crecía más que la pantalla y todo se cortaba a la derecha. Con el
+   mínimo en 0, lo ancho scrollea adentro de su propio contenedor. */
+.shell{display:grid;grid-template-columns:262px minmax(0,1fr);min-height:100vh}
+.sidebar{background:var(--surface-1);border-right:1px solid var(--border-soft);padding:16px 12px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;max-height:100vh}
+/* Botón de menú (hamburguesa) y fondo oscuro detrás del panel deslizable
+   — ocultos acá por default, se activan solo por debajo del breakpoint
+   mobile (ver el media query al final del archivo). En desktop no
+   cambian nada del layout actual. */
+.mobile-menu-btn{display:none}
+.sidebar-backdrop{display:none}
+.brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--text-primary);font-weight:700;letter-spacing:.02em;padding:4px 2px 10px;border-bottom:1px solid var(--border-soft)}
+.brand-mark{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--accent-text),var(--accent));display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--accent-ink)}
+.brand em{font-style:normal;color:var(--text-secondary)}
+
+.identity{display:flex;align-items:center;gap:9px;padding:9px 8px;border-radius:8px;background:var(--panel)}
+.identity .avatar{width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent-text);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.identity small{display:block;color:var(--text-muted);font-size:9px;letter-spacing:.06em}
+.identity strong{font-size:12px;display:block}
+.identity span{font-size:10.5px;color:var(--text-secondary)}
+
+nav{display:flex;flex-direction:column;gap:2px}
+.nav-section{margin-top:8px;font-size:9.5px;color:var(--text-muted);letter-spacing:.09em;text-transform:uppercase;padding:6px 8px 2px}
+.nav-link{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;border:0;background:transparent;color:var(--text-secondary);cursor:pointer;font-size:12.5px;text-align:left}
+.nav-link b{margin-left:auto;background:var(--panel-2);border-radius:20px;padding:1px 6px;font-size:9.5px;color:var(--text-secondary)}
+.nav-link:hover{background:var(--panel)}
+.nav-link.active{background:var(--accent-soft);color:var(--text-primary)}
+.nav-link.danger{color:var(--critical-text)}
+
+main{padding:24px 28px;max-width:1180px;min-width:0}
+header.pagehead{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:6px}
+.eyebrow{margin:0 0 4px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+h1{margin:0;font-size:21px}
+.header-actions{display:flex;align-items:center;gap:10px}
+.header-actions span{color:var(--text-muted);font-size:12px}
+button.primary{background:var(--accent);border:0;color:var(--accent-ink);padding:9px 14px;border-radius:7px;font-size:12.5px;cursor:pointer;font-weight:600}
+button.secondary{background:var(--panel);border:1px solid var(--border);color:var(--text-primary);padding:8px 12px;border-radius:7px;font-size:12.5px;cursor:pointer}
+button.ghost,a.ghost{background:transparent;border:1px solid var(--border-soft);color:var(--text-secondary);padding:6px 10px;border-radius:6px;font-size:11px;cursor:pointer;display:inline-block}
+button.linklike{background:transparent;border:0;color:var(--accent);cursor:pointer;font-size:12px;padding:0}
+button:disabled{opacity:.55;cursor:not-allowed}
+
+.banner{margin:14px 0 20px;padding:12px 14px;border-radius:10px;background:var(--panel);border:1px solid var(--border-soft);display:flex;gap:12px;align-items:flex-start;font-size:12px;color:var(--text-secondary)}
+.banner strong{color:var(--text-primary)}
+
+.panel{background:var(--panel);border:1px solid var(--border-soft);border-radius:10px;padding:16px}
+.panel h3{margin:0 0 10px;font-size:13px}
+.panel label{display:block;font-size:11px;color:var(--text-secondary);margin-bottom:12px}
+.panel label>span{display:block;margin-bottom:5px;font-weight:600;color:var(--text-primary);font-size:12px}
+.panel input,.panel select,.panel textarea{width:100%;background:var(--panel-2);border:1px solid var(--border);color:var(--text-primary);padding:10px 11px;border-radius:7px;font-size:12.5px}
+.panel input:focus,.panel select:focus,.panel textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.panel textarea{min-height:70px;resize:vertical;line-height:1.5}
+.cuit-hero{font-size:13px;color:var(--text-muted);letter-spacing:.03em;text-transform:uppercase;margin-bottom:10px}
+.cuit-hero strong{font-size:15px;color:var(--text-primary);text-transform:none;letter-spacing:normal;margin-left:6px}
+.mini-row{display:flex;align-items:center;justify-content:space-between;padding:8px 2px;border-bottom:1px solid var(--border-soft);font-size:12px;gap:10px}
+.mini-row:last-child{border:0}
+.mini-row .t{color:var(--text-primary)}
+.mini-row .s{color:var(--text-muted);font-size:11px}
+
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:20px;font-size:10.5px;font-weight:600;letter-spacing:.02em;white-space:nowrap}
+.badge.st-open{background:var(--panel-2);color:var(--text-secondary)}
+.badge.st-progress{background:var(--accent-soft);color:var(--progress-text)}
+.badge.st-done{background:var(--good-bg);color:var(--good-text)}
+.badge.st-pending{background:var(--warning-bg);color:var(--warning-text)}
+.badge.sev-good{background:var(--good-bg);color:var(--good-text)}
+.badge.sev-warning{background:var(--warning-bg);color:var(--warning-text)}
+.badge.sev-critical{background:var(--critical-bg);color:var(--critical-text)}
+
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{padding:7px 12px;border-radius:20px;border:1px solid var(--border-soft);background:var(--panel);color:var(--text-secondary);font-size:11.5px;cursor:pointer}
+.tab.active{background:var(--accent-soft);border-color:var(--accent);color:var(--text-primary)}
+
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.kpi{background:var(--panel);border:1px solid var(--border-soft);border-radius:10px;padding:14px}
+.kpi .label{font-size:10.5px;color:var(--text-muted);letter-spacing:.04em;text-transform:uppercase}
+.kpi .value{font-size:26px;font-weight:700;margin-top:6px}
+.kpi .delta{font-size:11px;margin-top:5px;display:flex;align-items:center;gap:5px}
+.kpi .delta.good{color:var(--good)} .kpi .delta.critical{color:var(--critical)} .kpi .delta.neutral{color:var(--text-muted)}
+
+.two-col{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-top:6px}
+
+.filters{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:16px 0}
+.filters select,.filters input{background:var(--panel);border:1px solid var(--border);color:var(--text-primary);padding:8px 10px;border-radius:7px;font-size:12px;min-width:140px}
+
+.cal-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:10px}
+.cal-nav h3{margin:0;font-size:14px;min-width:160px;text-align:center}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-grid.cal-head{margin-bottom:6px}
+.cal-weekday{text-align:center;font-size:10.5px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;padding:4px 0}
+.cal-cell{background:var(--panel);border:1px solid var(--border-soft);border-radius:8px;min-height:92px;padding:6px;display:flex;flex-direction:column;gap:4px}
+.cal-cell.cal-empty{background:transparent;border-color:transparent}
+.cal-cell.cal-today{border-color:var(--accent)}
+.cal-cell.cal-clickable{cursor:pointer}
+.cal-cell.cal-clickable:hover{border-color:var(--accent)}
+.cal-daynum{font-size:11px;color:var(--text-muted);font-weight:600}
+.cal-chips{display:flex;flex-direction:column;gap:3px;overflow:hidden}
+.cal-chip{display:block;width:100%;text-align:left;border:0;border-radius:5px;padding:3px 6px;font-size:10px;line-height:1.3;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:inherit}
+.cal-chip.pending{background:var(--panel-2);color:var(--text-secondary)}
+.cal-chip.late{background:var(--critical-bg);color:var(--critical-text)}
+.cal-chip.done{background:var(--good-bg);color:var(--good-text)}
+@media (max-width:900px){
+  .cal-grid{grid-template-columns:repeat(7,minmax(70px,1fr));overflow-x:auto}
+}
+
+.card-list{display:flex;flex-direction:column;gap:9px}
+.item-card{background:var(--panel);border:1px solid var(--border-soft);border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:8px}
+.item-card.clickable{cursor:pointer}
+.item-card.clickable:hover{border-color:var(--accent)}
+.item-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.item-title{font-size:13.5px;font-weight:600}
+.item-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--text-muted)}
+.item-badges{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.item-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+table.data-table{width:100%;border-collapse:collapse;font-size:12px}
+table.data-table th{text-align:left;color:var(--text-muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;padding:8px 10px;border-bottom:1px solid var(--border-soft)}
+table.data-table td{padding:9px 10px;border-bottom:1px solid var(--border-soft)}
+table.data-table tr:last-child td{border:0}
+/* Cualquier tabla con muchas columnas (CUIT, estado, etc.) hay que
+   envolverla en <div class="table-scroll"><table class="data-table">...
+   así en mobile se puede deslizar horizontalmente en vez de romper el
+   layout. Ver "Lecciones ya aprendidas" en el README. */
+.table-scroll{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+.avatar-sm{width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent-text);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+
+.file-field{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--border);border-radius:7px;padding:7px 8px 7px 7px}
+.file-btn{background:var(--accent-soft);color:var(--accent-text);padding:8px 13px;border-radius:6px;font-size:11.5px;cursor:pointer;font-weight:700;white-space:nowrap;flex-shrink:0;border:0}
+.file-btn:hover{background:var(--accent);color:var(--accent-ink)}
+.file-name{font-size:12px;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* !important a propósito: sin eso, reglas más específicas como
+   `.panel input{width:100%}` le ganan y el input "oculto" pasa a medir
+   el ancho entero de la página (scroll horizontal fantasma). */
+.visually-hidden{position:absolute !important;width:1px !important;height:1px !important;padding:0 !important;margin:-1px !important;overflow:hidden !important;clip:rect(0,0,0,0) !important;white-space:nowrap !important;border:0 !important}
+
+.settings-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:13px 2px;border-bottom:1px solid var(--border-soft)}
+.settings-row:last-of-type{border-bottom:0}
+.settings-label{font-size:13px;font-weight:600;color:var(--text-primary)}
+.settings-desc{font-size:11.5px;color:var(--text-muted);margin-top:3px;line-height:1.5}
+.settings-row select{width:auto;min-width:160px}
+.settings-section{font-size:10.5px;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px}
+
+.switch{position:relative;display:inline-block;width:42px;height:24px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0;position:absolute}
+.switch .slider{position:absolute;cursor:pointer;inset:0;background:var(--panel-2);border:1px solid var(--border);border-radius:20px;transition:.15s}
+.switch .slider:before{position:absolute;content:"";height:16px;width:16px;left:2px;top:2px;background:var(--text-muted);border-radius:50%;transition:.15s}
+.switch input:checked + .slider{background:var(--accent-soft);border-color:var(--accent)}
+.switch input:checked + .slider:before{background:var(--accent);transform:translateX(18px)}
+
+textarea.textarea-lg{min-height:160px}
+
+.checklist-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 2px;border-bottom:1px solid var(--border-soft);flex-wrap:wrap}
+.checklist-row:last-child{border:0}
+.checklist-row .t{font-size:12.5px;font-weight:600;color:var(--text-primary)}
+.checklist-actions{display:flex;gap:6px;flex-wrap:wrap}
+.chip-toggle{border:1px solid var(--border-soft);background:var(--panel-2);color:var(--text-secondary);padding:5px 11px;border-radius:20px;font-size:10.5px;cursor:pointer;font-weight:600}
+.chip-toggle.on{border-color:var(--good);background:var(--good-bg);color:var(--good-text)}
+
+.item-rows{display:flex;flex-direction:column;gap:8px;margin-bottom:6px}
+.item-row{display:grid;grid-template-columns:1fr 140px;gap:8px}
+
+.overlay{position:fixed;inset:0;background:rgba(6,10,20,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+.overlay.show{display:flex}
+.modal{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:22px;width:100%;max-width:600px;max-height:88vh;overflow:auto}
+.modal.modal-lg{max-width:min(94vw,940px)}
+/* Ficha de cliente (modal-lg): más aire para que las pestañas
+   (Ficha/Socios/Tareas/Impuestos/Facturación/Documentación/Historial)
+   entren en una sola fila, y textos un poco más grandes que en el
+   resto de la app para que se lean mejor dentro del recuadro. */
+.modal.modal-lg .tabs{gap:8px}
+.modal.modal-lg .tab{font-size:12.5px;padding:8px 14px}
+.modal.modal-lg .cuit-hero{font-size:14px}
+.modal.modal-lg .cuit-hero strong{font-size:17px}
+.modal.modal-lg .mini-row{font-size:13.5px;padding:10px 2px}
+.modal.modal-lg .mini-row .s{font-size:12.5px}
+.modal.modal-lg .panel h3,
+.modal.modal-lg > h3{font-size:14.5px}
+.modal.modal-lg table.data-table{font-size:13.5px}
+.modal.modal-lg table.data-table th{font-size:11.5px}
+.modal.modal-lg table.data-table td{padding:11px 10px}
+.modal.modal-lg .item-title{font-size:14.5px}
+.modal.modal-lg .item-meta{font-size:12.5px}
+.modal.modal-lg .checklist-row .t{font-size:13.5px}
+.modal.modal-lg .file-hint{font-size:12px}
+.modal.modal-lg .badge{font-size:11.5px;padding:4px 9px}
+.modal.modal-lg .empty{font-size:13px}
+.modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.modal-head h2{margin:2px 0 0;font-size:16px}
+.modal .close{background:transparent;border:0;color:var(--text-muted);font-size:20px;cursor:pointer}
+.modal label{display:block;font-size:11px;color:var(--text-secondary);margin-bottom:12px}
+.modal label>span{display:block;margin-bottom:5px}
+.modal input,.modal select,.modal textarea{width:100%;background:var(--panel);border:1px solid var(--border);color:var(--text-primary);padding:9px 10px;border-radius:7px;font-size:12.5px}
+.modal textarea{min-height:60px;resize:vertical}
+.modal input:focus,.modal select:focus,.modal textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:6px}
+.detail-columns{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+.file-hint{font-size:10.5px;color:var(--text-muted);margin-top:4px}
+
+.toast{position:fixed;bottom:22px;right:24px;display:none;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--accent);color:var(--text-primary);padding:11px 14px;border-radius:8px;box-shadow:0 12px 35px #0008;z-index:60;font-size:12.5px}
+.toast.show{display:flex}
+.empty{padding:26px;text-align:center;color:var(--text-muted);font-size:12.5px}
+
+.login-shell{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-box{background:var(--panel);border:1px solid var(--border-soft);border-radius:12px;padding:28px;width:100%;max-width:400px}
+.login-box .eyebrow{text-align:center}
+.login-box h1{font-size:16px;margin:2px 0 4px;text-align:center}
+.login-box p{font-size:12px;color:var(--text-muted);margin:0 0 18px;text-align:center}
+.login-box label{display:block;font-size:11px;color:var(--text-secondary);margin-bottom:14px}
+.login-box label>span{display:block;margin-bottom:6px;font-weight:600;color:var(--text-primary);font-size:12px}
+.login-box input,.login-box select{width:100%;background:var(--panel-2);border:1px solid var(--border);color:var(--text-primary);padding:10px 11px;border-radius:7px;font-size:13px}
+.login-box input:focus,.login-box select:focus{outline:2px solid var(--accent);outline-offset:1px}
+.login-box .demo-users{display:flex;flex-direction:column;gap:8px}
+.login-box .demo-users button{width:100%;text-align:left}
+.sync-pill{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;color:var(--text-muted);padding:4px 0}
+.sync-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--good);flex-shrink:0}
+
+@media (max-width:960px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  /* Botones del header y badges de las tarjetas bajan de línea en vez de
+     salirse de la pantalla. */
+  .header-actions{flex-wrap:wrap}
+  .item-top{flex-wrap:wrap}
+  /* La sidebar ya no se esconde sin forma de volver a abrirla (como
+     estaba antes) — pasa a ser un panel que se desliza desde el
+     costado, arriba de todo, con un botón de hamburguesa para abrirla
+     y un fondo oscuro (backdrop) para cerrarla tocando afuera. */
+  .sidebar{
+    position:fixed; top:0; bottom:0; left:0; width:82vw; max-width:300px;
+    transform:translateX(-100%); transition:transform .2s ease;
+    z-index:40; box-shadow:0 0 40px rgba(0,0,0,.5);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-backdrop{
+    display:block; position:fixed; inset:0; background:rgba(6,10,20,.55);
+    z-index:35; opacity:0; pointer-events:none; transition:opacity .2s ease;
+  }
+  .sidebar-backdrop.show{opacity:1; pointer-events:auto}
+  .mobile-menu-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:38px; height:38px; border-radius:8px; border:1px solid var(--border);
+    background:var(--panel); color:var(--text-primary); font-size:18px;
+    cursor:pointer; flex-shrink:0;
+  }
+  main{padding:16px}
+  header.pagehead{flex-wrap:wrap}
+  .kpi-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .two-col{grid-template-columns:minmax(0,1fr)}
+  .form-grid{grid-template-columns:minmax(0,1fr)}
+  .detail-columns{grid-template-columns:minmax(0,1fr)}
+  /* Modales: de caja centrada a pantalla completa — más cómodo para
+     leer/completar formularios con el teclado del celular arriba. */
+  .overlay{padding:0}
+  .modal, .modal.modal-lg{
+    max-width:100%; width:100%; height:100%; max-height:100dvh;
+    border-radius:0;
+  }
+  /* Botones/ítems de nav un poco más altos, para que el dedo no falle
+     el tap (el mouse perdona hitboxes chicos, el dedo no). */
+  .nav-link{padding:11px 10px; font-size:13px}
+  button.primary, button.secondary, button.ghost{padding-top:10px; padding-bottom:10px}
+}
+
+/* Quiebre aparte para celular — el de arriba (960px) trata igual a una
+   tablet apaisada que a un iPhone. Acá se achica el aire general un
+   poco más, y las tablas ganan más margen de toque. Validado en RIBO
+   Pets contra un celular real; se porta al esqueleto para que cualquier
+   rubro nuevo lo tenga desde el día uno en vez de tener que redescubrirlo. */
+@media (max-width:640px){
+  /* Filas de listas (nombre + acciones): las acciones bajan de línea si no entran. */
+  .mini-row{flex-wrap:wrap}
+  main{padding:16px 14px}
+  .modal{padding:16px}
+  button.ghost, a.ghost{padding:9px 13px; font-size:12px}
+  table.data-table th, table.data-table td{padding:10px 8px}
+  /* Calendario: 7 columnas que entran justas en la pantalla (mismo criterio
+     que ya usa Consorcios) en vez de una grilla más ancha con scroll
+     propio, que se desalineaba de la fila de los días de la semana. */
+  .cal-grid{grid-template-columns:repeat(7,minmax(0,1fr));overflow-x:visible;gap:3px}
+  .cal-weekday{font-size:9px}
+  .cal-cell{min-height:58px;padding:4px}
+  .cal-daynum{font-size:10.5px}
+  .cal-chip{font-size:9px;padding:2px 3px}
+}
