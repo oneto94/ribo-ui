@@ -11,7 +11,7 @@ acá no rompe a nadie hasta que ese rubro sube de versión a propósito.
 ## Instalar en un rubro
 
 ```bash
-npm install github:oneto94/ribo-ui#v2.1.0
+npm install github:oneto94/ribo-ui#v2.2.0
 ```
 
 (Para probar cambios de ribo-ui antes de publicarlos: `npm install ../ribo-ui`
@@ -52,17 +52,30 @@ deploy, antes del build):
 | `fmt`, `fmtMonth`, `shiftMonth`, `money`, `initials` | Formatos es-AR. |
 | `hoyISO()`, `mesActualISO()` | "Hoy" y "este mes" en hora de Buenos Aires (no UTC). |
 | `getTheme()`, `toggleTheme()`, `THEME_BOOT_SCRIPT` | Modo claro/oscuro. El script de arranque va inline en el `<head>`, antes del CSS. |
+| `leerRuta()`, `irARuta(vista, ...partes)`, `reemplazarRuta(...)`, `alCambiarRuta(fn)`, `hashRuta(...)` | Una URL por pantalla con el hash (`#/clientes`). `irA` del rubro llama a `irARuta`; `alCambiarRuta` dibuja la pantalla (así "atrás" anda igual que el menú); al arrancar, una vista inválida se corrige con `reemplazarRuta`. Ver `src/rutas.js`. |
+| `mensajeError(err)`, `toastError(err, contexto)`, `codigoError(err)` | Errores en castellano: `toastError(err, 'No se pudo guardar')` → "No se pudo guardar: No tenés permiso para hacer esto…". Nunca mostrar `err.message` crudo. |
+| `validar(raiz, reglas)`, `marcarError(campo, texto)`, `limpiarErrores(raiz)` | Validación con el error debajo de cada campo. Reglas por id: `requerido`, `email`, `cuit`, `telefono`, `url`, `numero: { positivo, min, max, entero }`, `validar: (v) => 'mensaje'`; `true` usa el texto de siempre, un string lo reemplaza. Formularios `<form>` con `novalidate` (si no, el navegador muestra sus propios globos). |
+| `esEmail`, `esCuit`, `esTelefono`, `esUrl`, `errorDeCampo(valor, reglas)` | Los mismos chequeos sueltos. |
+| `conCarga(boton, accion, { error })` | Botón deshabilitado con una rueda mientras corre `accion`; se rehabilita siempre. Guardar `e.currentTarget` antes del primer `await`. |
 | `ribo-ui/ribo.css` (= `tokens.css` + `base.css`) | Tokens (colores, escala de letra con mínimo 12px, espacios, bordes, sombras, capas) y componentes. Una tabla con clase `tarjetas` y `data-label` en cada `<td>` se ve como tarjetas en el celular. |
 
 ## Pasar un rubro de v1 a v2
 
-1. `npm install github:oneto94/ribo-ui#v2.1.0` y borrar `node_modules/.vite`.
+1. `npm install github:oneto94/ribo-ui#v2.2.0` y borrar `node_modules/.vite`.
 2. En `app.js`, reemplazar el shell armado a mano por `shell({...})` (menú con íconos, acción principal sin "+ " en el texto, acciones secundarias en `mas`, Mi Cuenta/Soporte en `menuUsuario`).
 3. Login: `${logoLoginHtml()}` arriba del eyebrow.
 4. `index.html`: copiar `THEME_BOOT_SCRIPT` (primera visita = tema del sistema). Borrar `public/favicon.svg` e `icons.svg` si son los de la plantilla de Vite.
 5. `style.css` del rubro: sacar tamaños en px y usar los tokens (`var(--fs-sm)`, `var(--sp-3)`…).
 6. Vistas: `confirm()` → `await confirmar(...)`, "Todavía no hay…" → `vacio(...)`, "Cargando…" → `cargando()`, botones "+ X" → `${icono('plus')}X`, tablas grandes → `tarjetas`.
 7. Verificar: sin desbordes en 1440/1024/768/375 y round-trip de "guardar sin cambios" idéntico.
+
+## Experiencia de uso (v2.2)
+
+1. Rutas: `irA(vista)` → `if (!irARuta(vista)) aplicarVista(vista)`; en `renderApp`, leer la ruta, validarla contra lo que el usuario puede ver y escuchar `alCambiarRuta` (cerrando el modal abierto); dejar de escuchar al cerrar sesión. `document.title` con el nombre de la pantalla.
+2. Errores: `toast('No se pudo X: ' + err.message)` → `toastError(err, 'No se pudo X')`. Los avisos de éxito con `{ tipo: 'exito' }`.
+3. Botones: `btn.disabled = true; try … catch … btn.disabled = false` → `await conCarga(btn, async () => …, { error: 'No se pudo X' })`.
+4. Formularios: `if (!x) return;` o un aviso suelto → `if (!validar(modal, {...})) return;`. Un dato importado con otro formato no tiene que bloquear la edición: validar el formato solo si el campo cambió.
+5. Carga: `cargando()` hasta el primer dato (no "Todavía no hay…" por un instante) y `<div class="arranque" aria-busy="true" aria-label="Cargando"></div>` adentro de `#app` en `index.html`.
 
 ## Por qué lit-html
 

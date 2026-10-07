@@ -1,5 +1,32 @@
 # Cambios
 
+## 2.2.0 — 2026-10-07
+
+Experiencia de uso (Etapa 4). Compatible con 2.1.0: todo es nuevo y
+opcional; cada rubro lo adopta cuando migra.
+
+- **Una URL por pantalla** (`leerRuta`, `irARuta`, `reemplazarRuta`,
+  `alCambiarRuta`, `hashRuta`): `#/clientes`, `#/deportes/futbol`.
+  Recargar deja al usuario donde estaba y "atrás"/"adelante" funcionan.
+- **Errores en castellano** (`mensajeError`, `toastError`,
+  `codigoError`): traduce los códigos de Firebase (inicio de sesión,
+  permisos, conexión, límites…) a qué pasó y qué hacer. Un mensaje que ya
+  está en castellano pasa tal cual; un texto en inglés sin código conocido
+  se reemplaza por un mensaje genérico. El error original queda en la
+  consola.
+- **Validación por campo** (`validar`, `marcarError`, `limpiarError`,
+  `limpiarErrores`, `errorDeCampo` y `esEmail`, `esCuit` con dígito
+  verificador, `esTelefono`, `esUrl`): el error va debajo de cada campo
+  (con `aria-invalid` y `aria-describedby`), el foco al primero en
+  pantalla, y se borra apenas se corrige.
+- **Botones que trabajan** (`conCarga`): deshabilitado mientras guarda
+  (sin doble envío), una rueda en lugar del texto (sin cambiar el ancho),
+  y se rehabilita siempre al terminar. Con `{ error }` muestra la falla
+  con `toastError`.
+- CSS: `.campo-error`, borde rojo en `[aria-invalid="true"]`,
+  `button.ocupado` y `.arranque` (una rueda al centro para el
+  `<div id="app">` mientras se resuelve la sesión).
+
 ## 2.1.0 — 2026-10-07
 
 Compatible con 2.0.0: nada que cambiar en los rubros para seguir andando.
