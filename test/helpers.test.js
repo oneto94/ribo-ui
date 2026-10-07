@@ -36,7 +36,7 @@ test('formatos es-AR', () => {
   assert.equal(money(1234567), '$1.234.567');
   assert.equal(money(null), '$0');
   assert.equal(fmt(''), '—');
-  assert.match(fmt('2026-10-05'), /5.*oct.*26/);
+  assert.match(fmt('2026-10-05'), /5.*oct.*2026/);
 });
 
 test('hoyISO usa la hora de Buenos Aires, no UTC', () => {
@@ -48,7 +48,37 @@ test('hoyISO usa la hora de Buenos Aires, no UTC', () => {
 
 test('el módulo principal carga en Node (sin DOM) y exporta la API', async () => {
   const api = await import('../src/index.js');
-  for (const k of ['html', 'render', 'nothing', 'repeat', 'live', 'escapeHtml', 'sanitizeUrl', 'safeUrl', 'fmt', 'money', 'hoyISO', 'pintar', 'conservarFoco', 'toast', 'getTheme', 'toggleTheme', 'modalMarkup', 'openModal', 'closeModal']) {
+  for (const k of ['html', 'render', 'nothing', 'repeat', 'live', 'escapeHtml', 'sanitizeUrl', 'safeUrl', 'fmt', 'money', 'hoyISO', 'pintar', 'conservarFoco', 'toast', 'getTheme', 'toggleTheme', 'modalMarkup', 'openModal', 'closeModal', 'icono', 'iconoHtml', 'vacio', 'cargando', 'menu', 'confirmar', 'shell', 'logoLoginHtml', 'LOGO_RIBO']) {
     assert.ok(api[k], `falta export ${k}`);
   }
+});
+
+test('íconos: los nombres de los menús existen y se arman como SVG de trazo', async () => {
+  const { iconoHtml, NOMBRES_ICONOS } = await import('../src/icono.js');
+  assert.ok(NOMBRES_ICONOS.length >= 100);
+  for (const n of ['house', 'users', 'trash-2', 'plus', 'x', 'ellipsis', 'log-out', 'sun', 'moon']) assert.ok(NOMBRES_ICONOS.includes(n), n);
+  const svg = iconoHtml('plus', { tam: 20 });
+  assert.match(svg, /^<svg class="icono " width="20" height="20" viewBox="0 0 24 24"/);
+  assert.match(svg, /aria-hidden="true"/);
+  assert.throws(() => iconoHtml('no-existe'), /no existe el ícono/);
+});
+
+test('el tema de la primera visita sigue al sistema; el guardado manda', () => {
+  return import('../src/theme.js').then(({ THEME_BOOT_SCRIPT }) => {
+    const correr = (guardado, sistemaClaro) => {
+      let attr = null;
+      const ctx = {
+        localStorage: { getItem: () => guardado },
+        window: { matchMedia: () => ({ matches: sistemaClaro }) },
+        document: { documentElement: { setAttribute: (_k, v) => { attr = v; } } },
+      };
+      new Function('localStorage', 'window', 'document', THEME_BOOT_SCRIPT)(ctx.localStorage, ctx.window, ctx.document);
+      return attr;
+    };
+    assert.equal(correr(null, true), 'light');
+    assert.equal(correr(null, false), 'dark');
+    assert.equal(correr('dark', true), 'dark');
+    assert.equal(correr('light', false), 'light');
+    assert.equal(correr('cualquiera', false), 'dark');
+  });
 });

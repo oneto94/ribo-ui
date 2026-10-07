@@ -4,6 +4,32 @@
    necesite otra paleta redefine estas variables en su propio CSS,
    después del @import de ribo-ui. */
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+/* Escala fija (v2): ningún texto por debajo de 12px; el cuerpo es 14px.
+   Los componentes usan SOLO estas variables — un tamaño suelto en px en
+   base.css es un error. */
+:root{
+  --fs-xs:12px;   /* etiquetas en mayúsculas, badges, ayudas, encabezados de tabla */
+  --fs-sm:13px;   /* texto secundario, metadatos, pestañas, botones chicos */
+  --fs-md:14px;   /* cuerpo, menú, botones, campos, celdas */
+  --fs-lg:15px;   /* títulos de panel y de tarjeta */
+  --fs-xl:18px;   /* título de modal */
+  --fs-2xl:24px;  /* título de página */
+  --fs-3xl:28px;  /* números de KPI */
+  --lh:1.5;
+
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px; --sp-8:32px; --sp-10:40px;
+  --r-sm:6px; --r-md:8px; --r-lg:12px; --r-full:999px;
+
+  /* Capas: el menú lateral en celular tapa al header; un modal tapa a
+     todo; la confirmación tapa al modal que la abrió; los avisos quedan
+     siempre arriba. */
+  --z-menu:30; --z-backdrop:35; --z-sidebar:40; --z-overlay:50; --z-confirm:60; --z-toast:70;
+
+  --ctl-h:38px;   /* alto de botones y campos */
+  --ctl-h-sm:32px;
+  --sidebar-w:264px;
+}
 :root{color-scheme:dark;
   --surface-0:#100E0B; --surface-1:#171310; --panel:#1E1A14; --panel-2:#262019;
   --border:#362E22; --border-soft:#2A241C;
@@ -12,15 +38,15 @@
   --good:#5FA968; --warning:#D9862B; --serious:#C55F35; --critical:#D65D5A;
   --good-bg:#16241A; --warning-bg:#2E200D; --serious-bg:#301B10; --critical-bg:#301412;
   --good-text:#9AD6A0; --warning-text:#F0B571; --serious-text:#EFA37B; --critical-text:#F0938F; --progress-text:#E8CE94;
+  --shadow-1:0 1px 2px rgb(0 0 0 / .3);
+  --shadow-2:0 8px 24px rgb(0 0 0 / .4);
+  --shadow-3:0 18px 48px rgb(0 0 0 / .55);
+  --scrim:rgb(6 5 3 / .62);
 }
 /* Modo claro — mismas variables, otra paleta. Se activa con
-   [data-theme="light"] en <html> (ver index.html + src/ui/theme.js).
+   [data-theme="light"] en <html> (ver THEME_BOOT_SCRIPT en theme.js).
    Paleta RIBO ("casa"): dorado/bronce muestreado del logo de la marca,
-   sobre fondos cálidos casi negros (oscuro) / marfil (claro). Es el
-   punto de partida por defecto de cualquier rubro nuevo armado a partir
-   de este esqueleto — reemplazá estos 22 valores por la paleta propia
-   del rubro si corresponde (ver README, sección "Cambiar de paleta").
-   Contraste AA verificado en cada combinación texto/fondo. */
+   sobre fondos cálidos casi negros (oscuro) / marfil (claro). */
 :root[data-theme="light"]{color-scheme:light;
   --surface-0:#F7F2E7; --surface-1:#FFFDF7; --panel:#FFFFFF; --panel-2:#F1E9D8;
   --border:#E3D6B8; --border-soft:#EDE3CC;
@@ -29,4 +55,8 @@
   --good:#2E7D3C; --warning:#96560F; --serious:#93431E; --critical:#932F2C;
   --good-bg:#E6F2E7; --warning-bg:#FBEBD3; --serious-bg:#F8E1D3; --critical-bg:#F7DEDC;
   --good-text:#1F5C2A; --warning-text:#6E3D0C; --serious-text:#6B2F14; --critical-text:#6B211F; --progress-text:#5E4419;
+  --shadow-1:0 1px 2px rgb(60 45 20 / .08);
+  --shadow-2:0 8px 24px rgb(60 45 20 / .12);
+  --shadow-3:0 18px 48px rgb(60 45 20 / .2);
+  --scrim:rgb(28 23 18 / .45);
 }

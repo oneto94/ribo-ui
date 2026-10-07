@@ -20,7 +20,9 @@ export function toggleTheme() {
 // desde ahí porque tiene que correr antes que cualquier módulo.
 export const THEME_BOOT_SCRIPT = `(function () {
   try {
-    var t = localStorage.getItem('tema') === 'light' ? 'light' : 'dark';
+    var g = localStorage.getItem('tema');
+    // Primera visita (nada guardado): el tema del sistema operativo.
+    var t = g === 'light' || g === 'dark' ? g : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
     document.documentElement.setAttribute('data-theme', t);
   } catch (e) {}
 })();`;

@@ -15,3 +15,8 @@ export { hoyISO, mesActualISO } from './fecha.js';
 export { pintar, conservarFoco, toast } from './dom.js';
 export { getTheme, toggleTheme, THEME_BOOT_SCRIPT } from './theme.js';
 export { modalMarkup, openModal, closeModal } from './modal.js';
+export { icono, iconoHtml, NOMBRES_ICONOS } from './icono.js';
+export { vacio, cargando, menu } from './componentes.js';
+export { confirmar } from './confirmar.js';
+export { shell, logoLoginHtml } from './shell.js';
+export { LOGO_RIBO } from './logo.js';

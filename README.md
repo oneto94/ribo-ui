@@ -11,11 +11,12 @@ acá no rompe a nadie hasta que ese rubro sube de versión a propósito.
 ## Instalar en un rubro
 
 ```bash
-npm install github:oneto94/ribo-ui#v1.0.0
+npm install github:oneto94/ribo-ui#v2.0.0
 ```
 
-(Mientras el repo no esté en GitHub, para probar en local:
-`npm install ../ribo-ui`.)
+(Para probar cambios de ribo-ui antes de publicarlos: `npm install ../ribo-ui`
+— nunca commitear ese `file:` en un rubro. Después de cambiar de versión,
+borrar `node_modules/.vite` o Vite sigue sirviendo la anterior.)
 
 En el CSS del rubro, como primera línea:
 
@@ -37,15 +38,31 @@ deploy, antes del build):
 |---|---|
 | `html`, `render`, `nothing`, `repeat`, `live` | lit-html. **Importalos siempre desde `ribo-ui`**, nunca de `lit-html` directo: así todos usan la misma copia. |
 | `pintar(contenedor, contenido)` | Dibuja una vista. Acepta un template de lit o, mientras se migra, un string de HTML ya escapado. |
-| `openModal(eyebrow, título, cuerpo, grande?)`, `closeModal()`, `modalMarkup()` | El modal de la casa. `cuerpo` puede ser lit o string. Se cierra con Escape. `modalMarkup()` va una vez en el shell. |
-| `toast(msg)` | Aviso breve. Usa `textContent`: no hace falta escapar. |
+| `openModal(eyebrow, título, cuerpo, grande?)`, `closeModal()`, `modalMarkup()` | El modal de la casa. `cuerpo` puede ser lit o string; devuelve el nodo del cuerpo (para actualizarlo en el lugar con `render`). Se cierra con Escape y devuelve el foco. `modalMarkup()` va una vez en el shell (`shell()` ya lo incluye). |
+| `toast(msg, { tipo, duracion })` | Aviso con ícono y botón de cerrar; se apilan (máx. 3). `tipo`: `info`, `exito`, `error` o `aviso`. Sin tipo, un mensaje que empieza con "No se pudo" o "Error" sale como error. El texto nunca se interpreta como HTML. |
+| `confirmar({ titulo, mensaje, boton, cancelar, peligro })` | Reemplazo de `confirm()`: devuelve una promesa con `true`/`false`. Con `peligro` el botón es rojo y el foco arranca en Cancelar. Escape no cierra el modal de abajo. |
+| `shell({...})` | El armazón entero de la app: menú lateral con íconos y contadores, menú de usuario (tema, cerrar sesión y lo que sumes), header con UNA acción principal y el resto en "Más…", `#content` y el modal. Ver el comentario en `src/shell.js` y `demo/demo.js`. |
+| `icono(nombre, { tam })`, `iconoHtml(...)`, `NOMBRES_ICONOS` | Íconos de Lucide (lit o string). La lista está en `src/iconos.js`; para sumar uno: `scripts/generar-iconos.mjs` + `npm run iconos` + versión nueva. |
+| `vacio({ icono, titulo, texto, accion })`, `cargando(filas)` | Pantalla vacía con acción, y filas grises mientras llegan los datos. |
+| `menu({ boton, etiqueta, items })` | Menú desplegable (`<details>`): se cierra con Escape, clic afuera o al elegir. |
+| `LOGO_RIBO`, `logoLoginHtml()` | El isotipo de RIBO (data URI) y el `<img>` para el login. |
 | `escapeHtml(s)`, `safeUrl(url)` | Para templates **string** que van a `innerHTML`. |
 | `sanitizeUrl(url)` | Para un `href`/`src` en un template **de lit** (deja http(s) y data: de imagen/PDF; lo demás → `#`). |
 | `conservarFoco(fn)` | Redibujado con innerHTML sin perder el foco ni el cursor (con lit no hace falta). |
 | `fmt`, `fmtMonth`, `shiftMonth`, `money`, `initials` | Formatos es-AR. |
 | `hoyISO()`, `mesActualISO()` | "Hoy" y "este mes" en hora de Buenos Aires (no UTC). |
 | `getTheme()`, `toggleTheme()`, `THEME_BOOT_SCRIPT` | Modo claro/oscuro. El script de arranque va inline en el `<head>`, antes del CSS. |
-| `ribo-ui/ribo.css` (= `tokens.css` + `base.css`) | Tokens (colores, tipografía) y componentes (shell, sidebar, botones, paneles, tablas, modales, calendario, responsive). |
+| `ribo-ui/ribo.css` (= `tokens.css` + `base.css`) | Tokens (colores, escala de letra con mínimo 12px, espacios, bordes, sombras, capas) y componentes. Una tabla con clase `tarjetas` y `data-label` en cada `<td>` se ve como tarjetas en el celular. |
+
+## Pasar un rubro de v1 a v2
+
+1. `npm install github:oneto94/ribo-ui#v2.0.0` y borrar `node_modules/.vite`.
+2. En `app.js`, reemplazar el shell armado a mano por `shell({...})` (menú con íconos, acción principal sin "+ " en el texto, acciones secundarias en `mas`, Mi Cuenta/Soporte en `menuUsuario`).
+3. Login: `${logoLoginHtml()}` arriba del eyebrow.
+4. `index.html`: copiar `THEME_BOOT_SCRIPT` (primera visita = tema del sistema). Borrar `public/favicon.svg` e `icons.svg` si son los de la plantilla de Vite.
+5. `style.css` del rubro: sacar tamaños en px y usar los tokens (`var(--fs-sm)`, `var(--sp-3)`…).
+6. Vistas: `confirm()` → `await confirmar(...)`, "Todavía no hay…" → `vacio(...)`, "Cargando…" → `cargando()`, botones "+ X" → `${icono('plus')}X`, tablas grandes → `tarjetas`.
+7. Verificar: sin desbordes en 1440/1024/768/375 y round-trip de "guardar sin cambios" idéntico.
 
 ## Por qué lit-html
 
@@ -93,7 +110,9 @@ RIBO Ops es el primer rubro migrado entero (2026-10-05): es la referencia.
 
 ```bash
 npm install
-npm test          # node:test — helpers, fecha AR, API, y el chequeo de escapado
+npm test          # node:test — helpers, fecha AR, API, íconos, tema y el chequeo de escapado
+npm run demo      # página de muestra con todos los componentes (http://localhost:5174)
+npm run iconos    # regenera src/iconos.js desde Lucide
 ```
 
 Versionado [semver](https://semver.org/lang/es/): un cambio visual o de API

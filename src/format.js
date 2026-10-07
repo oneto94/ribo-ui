@@ -8,7 +8,7 @@ export function initials(name) {
 
 export function fmt(iso) {
   if (!iso) return '—';
-  return new Date(iso + 'T12:00:00').toLocaleDateString('es-AR', { day: 'numeric', month: 'short', year: '2-digit' });
+  return new Date(iso + 'T12:00:00').toLocaleDateString('es-AR', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 // iso: 'YYYY-MM-01' (o cualquier día del mes en cuestión)
