@@ -1,5 +1,17 @@
 # Cambios
 
+## 2.1.0 — 2026-10-07
+
+Compatible con 2.0.0: nada que cambiar en los rubros para seguir andando.
+
+- Tablas `.tarjetas` en el celular: las celdas bajan de línea (una celda
+  con varios badges ensanchaba la página) y la celda de acciones con
+  botones de texto (`data-label=" "`) los muestra juntos a la derecha.
+  Los rubros que tenían estas dos reglas en su propio CSS pueden borrarlas.
+- `shell()`: sin `onCerrarSesion` no muestra "Cerrar sesión" (apps sin
+  login, como RIBO Ops), y `marcaLogo: true` usa el isotipo de RIBO en
+  vez de la inicial de la organización.
+
 ## 2.0.0 — 2026-10-06
 
 Rediseño visual (Etapa 3). **Versión mayor:** cambia el aspecto de toda

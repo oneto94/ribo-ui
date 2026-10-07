@@ -11,7 +11,7 @@ acá no rompe a nadie hasta que ese rubro sube de versión a propósito.
 ## Instalar en un rubro
 
 ```bash
-npm install github:oneto94/ribo-ui#v2.0.0
+npm install github:oneto94/ribo-ui#v2.1.0
 ```
 
 (Para probar cambios de ribo-ui antes de publicarlos: `npm install ../ribo-ui`
@@ -56,7 +56,7 @@ deploy, antes del build):
 
 ## Pasar un rubro de v1 a v2
 
-1. `npm install github:oneto94/ribo-ui#v2.0.0` y borrar `node_modules/.vite`.
+1. `npm install github:oneto94/ribo-ui#v2.1.0` y borrar `node_modules/.vite`.
 2. En `app.js`, reemplazar el shell armado a mano por `shell({...})` (menú con íconos, acción principal sin "+ " en el texto, acciones secundarias en `mas`, Mi Cuenta/Soporte en `menuUsuario`).
 3. Login: `${logoLoginHtml()}` arriba del eyebrow.
 4. `index.html`: copiar `THEME_BOOT_SCRIPT` (primera visita = tema del sistema). Borrar `public/favicon.svg` e `icons.svg` si son los de la plantilla de Vite.

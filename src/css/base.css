@@ -23,6 +23,7 @@ button:focus:not(:focus-visible){outline:none}
 .brand>span:last-child,.brand-nombre{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .brand-mark{width:32px;height:32px;border-radius:var(--r-md);background:linear-gradient(135deg,var(--accent-text),var(--accent));display:flex;align-items:center;justify-content:center;font-size:var(--fs-md);font-weight:800;color:var(--accent-ink);flex-shrink:0}
 .brand em{font-style:normal;color:var(--text-secondary)}
+.brand-logo{width:32px;height:32px;flex-shrink:0}
 
 .identity{display:flex;align-items:center;gap:var(--sp-2);padding:var(--sp-2);border-radius:var(--r-md);background:var(--panel);min-width:0}
 .identity .avatar,.avatar-sm{width:32px;height:32px;border-radius:50%;background:var(--accent-soft);color:var(--accent-text);display:flex;align-items:center;justify-content:center;font-size:var(--fs-xs);font-weight:700;flex-shrink:0}
@@ -341,6 +342,12 @@ textarea.textarea-lg{min-height:160px}
   table.data-table.tarjetas td:first-child{font-weight:700;font-size:var(--fs-lg);text-align:left;padding-bottom:var(--sp-2)}
   table.data-table.tarjetas td:first-child::before{content:none}
   table.data-table.tarjetas td:empty{display:none}
+  /* Una celda con varios badges baja de línea en vez de ensanchar la
+     tarjeta (con nowrap, cada badge empujaba el ancho de la página). */
+  table.data-table.tarjetas td{flex-wrap:wrap;row-gap:var(--sp-1)}
+  /* Celda de acciones con botones de texto (data-label=" "): los botones
+     juntos y a la derecha. La de un solo ícono (data-label="") va arriba. */
+  table.data-table.tarjetas td[data-label=" "]{justify-content:flex-end;gap:var(--sp-2);padding-top:var(--sp-2)}
   table.data-table.tarjetas td.empty{display:block;font-weight:400;font-size:var(--fs-md);text-align:center;padding:var(--sp-3) 0}
   table.data-table.tarjetas td.empty::before{content:none}
   table.data-table.tarjetas tbody tr:hover td{background:transparent}

@@ -1,6 +1,6 @@
 {
   "name": "ribo-ui",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Base compartida de la casa RIBO: sistema de diseño, helpers comunes y lit-html.",
   "private": true,
   "type": "module",

@@ -26,6 +26,8 @@ import { LOGO_RIBO } from './logo.js';
 //     menuUsuario: [{ label: 'Mi cuenta', icono: 'user', onClick: … }],
 //     menuAbierto: false, onMenu: (abierto) => …,
 //     onCerrarSesion: …, onTema: () => …,       // onTema: redibujar después de cambiar el tema
+//     marcaLogo: false,                         // true: el isotipo de RIBO en vez de la inicial (apps internas)
+//   Sin onCerrarSesion (app sin login), el menú de usuario no muestra "Cerrar sesión".
 //   }))
 export function shell(c) {
   const oscuro = getTheme() === 'dark';
@@ -35,7 +37,7 @@ export function shell(c) {
     <div class="shell">
       <div class="sidebar-backdrop ${c.menuAbierto ? 'show' : ''}" id="sidebarBackdrop" @click=${() => c.onMenu?.(false)}></div>
       <aside class="sidebar ${c.menuAbierto ? 'open' : ''}" id="sidebar" aria-label="Menú principal">
-        <a class="brand" href="#" @click=${(e) => { e.preventDefault(); c.onIr?.(c.inicio || 'inicio'); }}><span class="brand-mark">${(org[0] || 'R').toUpperCase()}</span><span class="brand-nombre">${org.toUpperCase()}</span></a>
+        <a class="brand" href="#" @click=${(e) => { e.preventDefault(); c.onIr?.(c.inicio || 'inicio'); }}>${c.marcaLogo ? html`<img class="brand-logo" src=${LOGO_RIBO} alt="" />` : html`<span class="brand-mark">${(org[0] || 'R').toUpperCase()}</span>`}<span class="brand-nombre">${org.toUpperCase()}</span></a>
         <nav id="navLinks">${(c.nav || []).map((g) => html`
           ${g.seccion ? html`<div class="nav-section">${g.seccion}</div>` : nothing}
           ${g.items.map((it) => html`
@@ -54,8 +56,8 @@ export function shell(c) {
             <div class="menu-panel" role="menu">
               ${(c.menuUsuario || []).map((it) => html`<button class="menu-item" type="button" role="menuitem" @click=${(e) => { e.currentTarget.closest('details').open = false; it.onClick(); }}>${icono(it.icono || 'user')}${it.label}</button>`)}
               <button class="menu-item" type="button" role="menuitem" id="btnThemeToggle" @click=${(e) => { e.currentTarget.closest('details').open = false; toggleTheme(); c.onTema?.(); }}>${icono(oscuro ? 'sun' : 'moon')}${oscuro ? 'Modo claro' : 'Modo oscuro'}</button>
-              <div class="menu-sep" role="separator"></div>
-              <button class="menu-item danger" type="button" role="menuitem" id="btnSignOut" @click=${() => c.onCerrarSesion()}>${icono('log-out')}Cerrar sesión</button>
+              ${c.onCerrarSesion ? html`<div class="menu-sep" role="separator"></div>
+              <button class="menu-item danger" type="button" role="menuitem" id="btnSignOut" @click=${() => c.onCerrarSesion()}>${icono('log-out')}Cerrar sesión</button>` : nothing}
             </div>
           </details>
           ${c.sync ? html`<span class="sync-pill"><span class="dot"></span>${c.sync}</span>` : nothing}
