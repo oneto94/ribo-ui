@@ -12,9 +12,17 @@
 //                       (llamar quitar() al cerrar sesión)
 
 function partir(hash) {
-  return String(hash || '').replace(/^#\/?/, '').split('/').filter(Boolean).map((p) => {
-    try { return decodeURIComponent(p); } catch { return p; }
-  });
+  return String(hash || '')
+    .replace(/^#\/?/, '')
+    .split('/')
+    .filter(Boolean)
+    .map((p) => {
+      try {
+        return decodeURIComponent(p);
+      } catch {
+        return p;
+      }
+    });
 }
 
 // La pantalla actual según la URL. `vista` es '' si no hay ninguna.
@@ -25,7 +33,13 @@ export function leerRuta(hash = typeof location !== 'undefined' ? location.hash 
 
 // El hash de una pantalla: hashRuta('deportes', 'futbol') → '#/deportes/futbol'.
 export function hashRuta(vista, ...partes) {
-  return '#/' + [vista, ...partes].filter((p) => p != null && p !== '').map((p) => encodeURIComponent(String(p))).join('/');
+  return (
+    '#/' +
+    [vista, ...partes]
+      .filter((p) => p != null && p !== '')
+      .map((p) => encodeURIComponent(String(p)))
+      .join('/')
+  );
 }
 
 // Navega a una pantalla nueva (queda en el historial). Si ya es la actual

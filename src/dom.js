@@ -22,7 +22,9 @@ function hostDe(container, nuevo) {
 // o, mientras dure la migración, un string de HTML ya escapado.
 export function pintar(container, contenido) {
   if (typeof contenido === 'string' || contenido == null) {
-    conservarFoco(() => { hostDe(container, true).innerHTML = contenido || ''; });
+    conservarFoco(() => {
+      hostDe(container, true).innerHTML = contenido || '';
+    });
     container[HOST] = null; // un string no se puede actualizar en el lugar
     return;
   }
@@ -36,14 +38,26 @@ export function pintar(container, contenido) {
 export function conservarFoco(redibujar) {
   const activo = document.activeElement;
   const id = activo && activo.id;
-  let ini = null, fin = null;
-  try { ini = activo.selectionStart; fin = activo.selectionEnd; } catch { /* date, checkbox: sin selección */ }
+  let ini = null,
+    fin = null;
+  try {
+    ini = activo.selectionStart;
+    fin = activo.selectionEnd;
+  } catch {
+    /* date, checkbox: sin selección */
+  }
   redibujar();
   if (!id) return;
   const nuevo = document.getElementById(id);
   if (!nuevo || nuevo === activo) return;
   nuevo.focus();
-  if (ini != null) { try { nuevo.setSelectionRange(ini, fin); } catch { /* idem */ } }
+  if (ini != null) {
+    try {
+      nuevo.setSelectionRange(ini, fin);
+    } catch {
+      /* idem */
+    }
+  }
 }
 
 // Aviso breve abajo a la derecha, con ícono según el tipo y botón para
@@ -82,8 +96,14 @@ export function toast(msg, { tipo, duracion } = {}) {
   const item = document.createElement('div');
   item._clave = `${t}|${msg}`;
   item.className = `toast-item ${t}`;
-  const cerrar = () => { clearTimeout(item._t); item.remove(); };
-  render(html`${icono(ICONO_TOAST[t] || 'info', { tam: 18 })}<div class="toast-texto">${String(msg)}</div><button class="toast-cerrar" type="button" aria-label="Cerrar aviso" @click=${cerrar}>${icono('x', { tam: 16 })}</button>`, item);
+  const cerrar = () => {
+    clearTimeout(item._t);
+    item.remove();
+  };
+  render(
+    html`${icono(ICONO_TOAST[t] || 'info', { tam: 18 })}<div class="toast-texto">${String(msg)}</div><button class="toast-cerrar" type="button" aria-label="Cerrar aviso" @click=${cerrar}>${icono('x', { tam: 16 })}</button>`,
+    item,
+  );
   c.appendChild(item);
   while (c.children.length > MAX_TOASTS) c.firstElementChild.remove();
   item._t = setTimeout(cerrar, ms);

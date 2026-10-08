@@ -3,9 +3,17 @@
 // escapa solo todo lo que se interpola.
 
 export function escapeHtml(s) {
-  return String(s == null ? '' : s).replace(/[&<>"']/g, (ch) => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
-  }[ch]));
+  return String(s == null ? '' : s).replace(
+    /[&<>"']/g,
+    (ch) =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+      })[ch],
+  );
 }
 
 // Escapar no alcanza para una URL que va a un href: un `javascript:...`

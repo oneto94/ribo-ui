@@ -26,10 +26,17 @@ export function confirmar({ titulo, mensaje = '', boton = 'Confirmar', cancelar 
     // En fase de captura y frenando la propagación: Escape cierra esta
     // ventana y no el modal que quedó abajo.
     function alTeclado(e) {
-      if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); terminar(false); }
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        terminar(false);
+      }
     }
-    capa.addEventListener('mousedown', (e) => { if (e.target === capa) terminar(false); });
-    render(html`
+    capa.addEventListener('mousedown', (e) => {
+      if (e.target === capa) terminar(false);
+    });
+    render(
+      html`
       <div class="confirm-box ${peligro ? 'peligro' : ''}" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitulo" aria-describedby="confirmMensaje">
         <h2 id="confirmTitulo">${peligro ? icono('triangle-alert', { tam: 20 }) : nothing}${titulo}</h2>
         ${mensaje ? html`<p id="confirmMensaje">${mensaje}</p>` : nothing}
@@ -37,7 +44,9 @@ export function confirmar({ titulo, mensaje = '', boton = 'Confirmar', cancelar 
           <button class="ghost" type="button" data-confirm="no" @click=${() => terminar(false)}>${cancelar}</button>
           <button class=${peligro ? 'primary danger' : 'primary'} type="button" data-confirm="si" @click=${() => terminar(true)}>${boton}</button>
         </div>
-      </div>`, capa);
+      </div>`,
+      capa,
+    );
     document.body.appendChild(capa);
     window.addEventListener('keydown', alTeclado, true);
     capa.querySelector(`[data-confirm="${peligro ? 'no' : 'si'}"]`).focus();

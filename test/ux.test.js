@@ -21,11 +21,17 @@ test('errores de Firebase en castellano', () => {
   const auth = { code: 'auth/invalid-credential', message: 'Firebase: Error (auth/invalid-credential).' };
   assert.equal(mensajeError(auth), 'El email o la contraseña no son correctos.');
   assert.equal(mensajeError({ code: 'auth/wrong-password' }), 'El email o la contraseña no son correctos.');
-  assert.match(mensajeError({ code: 'permission-denied', message: 'Missing or insufficient permissions.' }), /^No tenés permiso/);
+  assert.match(
+    mensajeError({ code: 'permission-denied', message: 'Missing or insufficient permissions.' }),
+    /^No tenés permiso/,
+  );
   assert.match(mensajeError({ code: 'firestore/unavailable' }), /^No hay conexión/);
   // Sin code, pero con el código o el texto de Firebase adentro del mensaje.
   assert.match(mensajeError(new Error('Firebase: Error (auth/too-many-requests).')), /demasiados intentos/);
-  assert.match(mensajeError(new Error('No se pudo invitar (sin código): Missing or insufficient permissions.')), /^No tenés permiso/);
+  assert.match(
+    mensajeError(new Error('No se pudo invitar (sin código): Missing or insufficient permissions.')),
+    /^No tenés permiso/,
+  );
   assert.match(mensajeError(new TypeError('Failed to fetch')), /^No hay conexión/);
   assert.equal(codigoError({ code: 'firestore/permission-denied' }), 'permission-denied');
   assert.equal(codigoError(new Error('algo (auth/weak-password)')), 'auth/weak-password');
@@ -34,13 +40,23 @@ test('errores de Firebase en castellano', () => {
 test('errores: lo nuestro pasa tal cual, el inglés no', () => {
   // Mensaje nuestro con el código técnico al final: gana el nuestro, sin el código.
   assert.equal(
-    mensajeError(new Error('Tu email no tiene una invitación activa. Pedile a un admin que te invite primero. (permission-denied)')),
+    mensajeError(
+      new Error(
+        'Tu email no tiene una invitación activa. Pedile a un admin que te invite primero. (permission-denied)',
+      ),
+    ),
     'Tu email no tiene una invitación activa. Pedile a un admin que te invite primero.',
   );
   assert.equal(mensajeError(new Error('Ese ID ya está en uso (auth/email-already-in-use).')), 'Ese ID ya está en uso.');
   // Pero si lo nuestro envuelve un texto en inglés, manda el código.
-  assert.match(mensajeError(new Error('No se pudo invitar (sin código): Missing or insufficient permissions.')), /^No tenés permiso/);
-  assert.equal(mensajeError(new Error('Tu email no tiene una invitación activa.')), 'Tu email no tiene una invitación activa.');
+  assert.match(
+    mensajeError(new Error('No se pudo invitar (sin código): Missing or insufficient permissions.')),
+    /^No tenés permiso/,
+  );
+  assert.equal(
+    mensajeError(new Error('Tu email no tiene una invitación activa.')),
+    'Tu email no tiene una invitación activa.',
+  );
   assert.equal(mensajeError(new Error('Falta el nombre del cliente')), 'Falta el nombre del cliente');
   assert.equal(mensajeError('Ya existe un estudio con ese ID'), 'Ya existe un estudio con ese ID');
   assert.equal(mensajeError(new TypeError("Cannot read properties of undefined (reading 'id')")), MENSAJE_INESPERADO);
@@ -53,11 +69,13 @@ test('errores: lo nuestro pasa tal cual, el inglés no', () => {
 test('validadores de formato', () => {
   assert.ok(esEmail('ana@ejemplo.com'));
   assert.ok(esEmail('  ana.perez+x@sub.ejemplo.com.ar '));
-  for (const malo of ['ana', 'ana@', 'ana@ejemplo', 'ana @ejemplo.com', '@ejemplo.com', '']) assert.ok(!esEmail(malo), malo);
+  for (const malo of ['ana', 'ana@', 'ana@ejemplo', 'ana @ejemplo.com', '@ejemplo.com', ''])
+    assert.ok(!esEmail(malo), malo);
   assert.ok(esCuit('20-12345678-6'));
   assert.ok(esCuit('20123456786'));
   assert.ok(esCuit('27-11111111-7'));
-  for (const malo of ['20-12345678-5', '2012345678', '201234567861', '20-1234567a-6', '']) assert.ok(!esCuit(malo), malo);
+  for (const malo of ['20-12345678-5', '2012345678', '201234567861', '20-1234567a-6', ''])
+    assert.ok(!esCuit(malo), malo);
   assert.ok(esTelefono('+54 9 11 1234-5678'));
   assert.ok(esTelefono('(011) 4444-5555'));
   for (const malo of ['12345', 'llamame', '11-2222-3333 int 4', '1234567890123456']) assert.ok(!esTelefono(malo), malo);

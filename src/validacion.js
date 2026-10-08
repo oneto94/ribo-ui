@@ -118,7 +118,11 @@ export function marcarError(campo, texto) {
   const desc = (campo.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
   campo.setAttribute('aria-describedby', [...desc, nota.id].join(' '));
   // Se borra apenas se corrige (o se vuelve a tocar), sin esperar a guardar.
-  const alCorregir = () => { limpiarError(campo); campo.removeEventListener('input', alCorregir); campo.removeEventListener('change', alCorregir); };
+  const alCorregir = () => {
+    limpiarError(campo);
+    campo.removeEventListener('input', alCorregir);
+    campo.removeEventListener('change', alCorregir);
+  };
   campo.addEventListener('input', alCorregir);
   campo.addEventListener('change', alCorregir);
 }
@@ -142,7 +146,7 @@ export function validar(raiz, reglas) {
     if (!error) continue;
     marcarError(campo, error);
     // El foco va al primero en pantalla, no al primero de la lista de reglas.
-    if (!primero || (campo.compareDocumentPosition(primero) & Node.DOCUMENT_POSITION_FOLLOWING)) primero = campo;
+    if (!primero || campo.compareDocumentPosition(primero) & Node.DOCUMENT_POSITION_FOLLOWING) primero = campo;
   }
   if (primero) {
     primero.focus({ preventScroll: true });

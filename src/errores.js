@@ -35,16 +35,16 @@ const MENSAJES = {
   'auth/quota-exceeded': LIMITE,
   // Base de datos y funciones (Firestore, Cloud Functions, Storage)
   'permission-denied': SIN_PERMISO,
-  'unauthenticated': 'Tu sesión venció. Volvé a iniciar sesión.',
-  'unavailable': SIN_CONEXION,
+  unauthenticated: 'Tu sesión venció. Volvé a iniciar sesión.',
+  unavailable: SIN_CONEXION,
   'deadline-exceeded': 'El servidor tardó demasiado en responder. Probá de nuevo.',
   'not-found': 'Ese dato ya no existe: puede que otra persona lo haya borrado.',
   'already-exists': 'Ya existe un registro con esos datos.',
   'resource-exhausted': LIMITE,
-  'aborted': 'Otra persona cambió el mismo dato a la vez. Probá de nuevo.',
+  aborted: 'Otra persona cambió el mismo dato a la vez. Probá de nuevo.',
   'failed-precondition': 'No se pudo hacer en este momento. Probá de nuevo en unos segundos.',
   'invalid-argument': 'Algún dato no tiene el formato correcto. Revisá lo que cargaste.',
-  'cancelled': 'Se canceló la operación.',
+  cancelled: 'Se canceló la operación.',
   'storage/unauthorized': SIN_PERMISO,
   'storage/quota-exceeded': LIMITE,
   'storage/retry-limit-exceeded': SIN_CONEXION,
@@ -58,10 +58,12 @@ const TEXTOS = [
   [/quota exceeded/i, 'resource-exhausted'],
 ];
 
-const CODIGO_EN_TEXTO = /\b((?:auth|storage)\/[a-z-]+|permission-denied|unauthenticated|unavailable|deadline-exceeded|not-found|already-exists|resource-exhausted|failed-precondition|invalid-argument)\b/;
+const CODIGO_EN_TEXTO =
+  /\b((?:auth|storage)\/[a-z-]+|permission-denied|unauthenticated|unavailable|deadline-exceeded|not-found|already-exists|resource-exhausted|failed-precondition|invalid-argument)\b/;
 // Un texto en inglés (de Firebase, del navegador o de JavaScript) no se le
 // muestra a nadie: se reemplaza por el mensaje genérico.
-const INGLES = /^firebase\b|\b(the|is|are|was|failed|missing|invalid|cannot|could|unable|permissions?|network|undefined|null|function|property|reading|not)\b/i;
+const INGLES =
+  /^firebase\b|\b(the|is|are|was|failed|missing|invalid|cannot|could|unable|permissions?|network|undefined|null|function|property|reading|not)\b/i;
 const CASTELLANO = /[áéíóúñ¿¡]/i;
 
 // El código de Firebase de un error, sin el prefijo de servicio

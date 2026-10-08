@@ -22,5 +22,15 @@ export { shell, logoLoginHtml } from './shell.js';
 export { LOGO_RIBO } from './logo.js';
 export { leerRuta, hashRuta, irARuta, reemplazarRuta, alCambiarRuta } from './rutas.js';
 export { mensajeError, codigoError, toastError, MENSAJE_INESPERADO } from './errores.js';
-export { validar, marcarError, limpiarError, limpiarErrores, errorDeCampo, esEmail, esCuit, esTelefono, esUrl } from './validacion.js';
+export {
+  validar,
+  marcarError,
+  limpiarError,
+  limpiarErrores,
+  errorDeCampo,
+  esEmail,
+  esCuit,
+  esTelefono,
+  esUrl,
+} from './validacion.js';
 export { conCarga } from './carga.js';

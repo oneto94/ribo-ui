@@ -3,7 +3,13 @@
 // corra un día.
 
 export function initials(name) {
-  return String(name || '').split(' ').filter(Boolean).map((p) => p[0]).slice(0, 2).join('').toUpperCase();
+  return String(name || '')
+    .split(' ')
+    .filter(Boolean)
+    .map((p) => p[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
 }
 
 export function fmt(iso) {

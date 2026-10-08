@@ -32,7 +32,8 @@ export default [
       'prefer-const': ['error', { destructuring: 'all' }],
       eqeqeq: ['error', 'smart'],
       // alert/confirm/prompt del navegador: la casa usa toast() y confirmar().
-      'no-restricted-globals': ['error',
+      'no-restricted-globals': [
+        'error',
         { name: 'alert', message: 'Usá toast() de ribo-ui.' },
         { name: 'confirm', message: 'Usá confirmar() de ribo-ui.' },
         { name: 'prompt', message: 'Usá un modal con openModal() de ribo-ui.' },

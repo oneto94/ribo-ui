@@ -31,15 +31,23 @@ export function menu({ boton, etiqueta, items, clase = '', claseBoton = 'icon-bt
   return html`<details class="menu ${clase}">
     <summary class=${claseBoton} aria-label=${etiqueta || nothing} title=${etiqueta || nothing}>${boton}</summary>
     <div class="menu-panel" role="menu">
-      ${visibles.map((it) => (it.separador
-        ? html`<div class="menu-sep" role="separator"></div>`
-        : html`<button class="menu-item ${it.peligro ? 'danger' : ''}" type="button" role="menuitem" @click=${(e) => { e.currentTarget.closest('details').open = false; it.onClick(); }}>${it.icono ? icono(it.icono) : nothing}${it.label}</button>`))}
+      ${visibles.map((it) =>
+        it.separador
+          ? html`<div class="menu-sep" role="separator"></div>`
+          : html`<button class="menu-item ${it.peligro ? 'danger' : ''}" type="button" role="menuitem" @click=${(e) => {
+              e.currentTarget.closest('details').open = false;
+              it.onClick();
+            }}>${it.icono ? icono(it.icono) : nothing}${it.label}</button>`,
+      )}
     </div>
   </details>`;
 }
 
 if (typeof document !== 'undefined') {
-  const cerrarMenus = (salvo) => document.querySelectorAll('details.menu[open]').forEach((d) => { if (d !== salvo) d.open = false; });
+  const cerrarMenus = (salvo) =>
+    document.querySelectorAll('details.menu[open]').forEach((d) => {
+      if (d !== salvo) d.open = false;
+    });
   document.addEventListener('click', (e) => cerrarMenus(e.target.closest?.('details.menu')));
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;

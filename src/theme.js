@@ -11,7 +11,11 @@ export function getTheme() {
 export function toggleTheme() {
   const nuevo = getTheme() === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', nuevo);
-  try { localStorage.setItem(KEY, nuevo); } catch { /* modo incógnito: vale solo para esta sesión */ }
+  try {
+    localStorage.setItem(KEY, nuevo);
+  } catch {
+    /* modo incógnito: vale solo para esta sesión */
+  }
   return nuevo;
 }
 

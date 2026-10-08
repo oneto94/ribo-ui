@@ -28,29 +28,41 @@ test('detecta un dato sin escapar en un template string', () => {
 });
 
 test('acepta el dato escapado', () => {
-  const r = correr({ 'ui/a.js': 'import { escapeHtml as esc } from "x"; export const f = (c) => `<td>${esc(c.nombre)}</td>`;' });
+  const r = correr({
+    'ui/a.js': 'import { escapeHtml as esc } from "x"; export const f = (c) => `<td>${esc(c.nombre)}</td>`;',
+  });
   assert.equal(r.code, 0, r.out);
 });
 
 test('en lit-html no exige escapar texto (lit lo hace solo)', () => {
-  const r = correr({ 'ui/a.js': 'import { html } from "ribo-ui"; export const f = (c) => html`<td>${c.nombre}</td><input value=${c.email}>`;' });
+  const r = correr({
+    'ui/a.js':
+      'import { html } from "ribo-ui"; export const f = (c) => html`<td>${c.nombre}</td><input value=${c.email}>`;',
+  });
   assert.equal(r.code, 0, r.out);
 });
 
 test('en lit-html sí exige validar las URLs de href/src', () => {
-  const mal = correr({ 'ui/a.js': 'import { html } from "ribo-ui"; export const f = (c) => html`<a href=${c.link}>ver</a>`;' });
+  const mal = correr({
+    'ui/a.js': 'import { html } from "ribo-ui"; export const f = (c) => html`<a href=${c.link}>ver</a>`;',
+  });
   assert.equal(mal.code, 1, mal.out);
   assert.match(mal.out, /URL sin validar/);
-  const bien = correr({ 'ui/a.js': 'import { html, sanitizeUrl } from "ribo-ui"; export const f = (c) => html`<a href=${sanitizeUrl(c.link)}>ver</a>`;' });
+  const bien = correr({
+    'ui/a.js':
+      'import { html, sanitizeUrl } from "ribo-ui"; export const f = (c) => html`<a href=${sanitizeUrl(c.link)}>ver</a>`;',
+  });
   assert.equal(bien.code, 0, bien.out);
 });
 
 test('ignora selectores, toasts y líneas marcadas escape-ok', () => {
-  const r = correr({ 'ui/a.js': [
-    'export const a = (c) => document.querySelector(`[data-id="${c.id}"]`);',
-    'export const b = (c) => toast(`Cliente ${c.nombre} creado`);',
-    'export const d = (c) => `<b>${c.htmlYaArmado}</b>`; // escape-ok',
-  ].join('\n') });
+  const r = correr({
+    'ui/a.js': [
+      'export const a = (c) => document.querySelector(`[data-id="${c.id}"]`);',
+      'export const b = (c) => toast(`Cliente ${c.nombre} creado`);',
+      'export const d = (c) => `<b>${c.htmlYaArmado}</b>`; // escape-ok',
+    ].join('\n'),
+  });
   assert.equal(r.code, 0, r.out);
 });
 

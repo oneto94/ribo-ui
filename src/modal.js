@@ -5,7 +5,9 @@ import { icono } from './icono.js';
 // en el shell de la app; openModal() lo llena y lo muestra.
 export function modalMarkup() {
   return html`
-    <div class="overlay" id="modalOverlay" @mousedown=${(e) => { if (e.target.id === 'modalOverlay') closeModal(); }}>
+    <div class="overlay" id="modalOverlay" @mousedown=${(e) => {
+      if (e.target.id === 'modalOverlay') closeModal();
+    }}>
       <div class="modal" id="modalBox" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="modal-head">
           <div><p class="eyebrow" id="modalEyebrow">DETALLE</p><h2 id="modalTitle">Detalle</h2></div>
@@ -42,9 +44,14 @@ export function openModal(eyebrow, title, cuerpo, large = false) {
   overlay.classList.add('show');
   // Foco al primer campo del formulario; si no hay, a la caja (para que
   // Tab arranque adentro del modal y no detrás).
-  const campo = host.querySelector('input:not([type=hidden]):not([readonly]):not(.visually-hidden), select, textarea:not([readonly])');
+  const campo = host.querySelector(
+    'input:not([type=hidden]):not([readonly]):not(.visually-hidden), select, textarea:not([readonly])',
+  );
   if (campo && window.matchMedia('(min-width: 961px)').matches) campo.focus();
-  else { box.setAttribute('tabindex', '-1'); box.focus({ preventScroll: true }); }
+  else {
+    box.setAttribute('tabindex', '-1');
+    box.focus({ preventScroll: true });
+  }
   return host;
 }
 
@@ -52,7 +59,8 @@ export function closeModal() {
   const overlay = document.getElementById('modalOverlay');
   if (!overlay?.classList.contains('show')) return;
   overlay.classList.remove('show');
-  if (focoPrevio && focoPrevio.isConnected && typeof focoPrevio.focus === 'function') focoPrevio.focus({ preventScroll: true });
+  if (focoPrevio && focoPrevio.isConnected && typeof focoPrevio.focus === 'function')
+    focoPrevio.focus({ preventScroll: true });
   focoPrevio = null;
 }
 

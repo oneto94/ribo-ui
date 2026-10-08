@@ -37,14 +37,21 @@ export function shell(c) {
     <div class="shell">
       <div class="sidebar-backdrop ${c.menuAbierto ? 'show' : ''}" id="sidebarBackdrop" @click=${() => c.onMenu?.(false)}></div>
       <aside class="sidebar ${c.menuAbierto ? 'open' : ''}" id="sidebar" aria-label="Menú principal">
-        <a class="brand" href="#" @click=${(e) => { e.preventDefault(); c.onIr?.(c.inicio || 'inicio'); }}>${c.marcaLogo ? html`<img class="brand-logo" src=${LOGO_RIBO} alt="" />` : html`<span class="brand-mark">${(org[0] || 'R').toUpperCase()}</span>`}<span class="brand-nombre">${org.toUpperCase()}</span></a>
-        <nav id="navLinks">${(c.nav || []).map((g) => html`
+        <a class="brand" href="#" @click=${(e) => {
+          e.preventDefault();
+          c.onIr?.(c.inicio || 'inicio');
+        }}>${c.marcaLogo ? html`<img class="brand-logo" src=${LOGO_RIBO} alt="" />` : html`<span class="brand-mark">${(org[0] || 'R').toUpperCase()}</span>`}<span class="brand-nombre">${org.toUpperCase()}</span></a>
+        <nav id="navLinks">${(c.nav || []).map(
+          (g) => html`
           ${g.seccion ? html`<div class="nav-section">${g.seccion}</div>` : nothing}
-          ${g.items.map((it) => html`
+          ${g.items.map(
+            (it) => html`
             <button class="nav-link ${c.vista === it.key ? 'active' : ''}" data-view=${it.key} aria-current=${c.vista === it.key ? 'page' : nothing} @click=${() => c.onIr(it.key)}>
               ${it.icono ? icono(it.icono, { tam: 18 }) : nothing}<span>${it.label}</span> ${it.contador > 0 ? html`<b>${it.contador}</b>` : nothing}
-            </button>`)}
-        `)}</nav>
+            </button>`,
+          )}
+        `,
+        )}</nav>
         <div class="sidebar-pie">
           ${c.pie || nothing}
           <details class="menu arriba">
@@ -54,10 +61,24 @@ export function shell(c) {
               ${icono('chevron-up', { tam: 16 })}
             </summary>
             <div class="menu-panel" role="menu">
-              ${(c.menuUsuario || []).map((it) => html`<button class="menu-item" type="button" role="menuitem" @click=${(e) => { e.currentTarget.closest('details').open = false; it.onClick(); }}>${icono(it.icono || 'user')}${it.label}</button>`)}
-              <button class="menu-item" type="button" role="menuitem" id="btnThemeToggle" @click=${(e) => { e.currentTarget.closest('details').open = false; toggleTheme(); c.onTema?.(); }}>${icono(oscuro ? 'sun' : 'moon')}${oscuro ? 'Modo claro' : 'Modo oscuro'}</button>
-              ${c.onCerrarSesion ? html`<div class="menu-sep" role="separator"></div>
-              <button class="menu-item danger" type="button" role="menuitem" id="btnSignOut" @click=${() => c.onCerrarSesion()}>${icono('log-out')}Cerrar sesión</button>` : nothing}
+              ${(c.menuUsuario || []).map(
+                (it) =>
+                  html`<button class="menu-item" type="button" role="menuitem" @click=${(e) => {
+                    e.currentTarget.closest('details').open = false;
+                    it.onClick();
+                  }}>${icono(it.icono || 'user')}${it.label}</button>`,
+              )}
+              <button class="menu-item" type="button" role="menuitem" id="btnThemeToggle" @click=${(e) => {
+                e.currentTarget.closest('details').open = false;
+                toggleTheme();
+                c.onTema?.();
+              }}>${icono(oscuro ? 'sun' : 'moon')}${oscuro ? 'Modo claro' : 'Modo oscuro'}</button>
+              ${
+                c.onCerrarSesion
+                  ? html`<div class="menu-sep" role="separator"></div>
+              <button class="menu-item danger" type="button" role="menuitem" id="btnSignOut" @click=${() => c.onCerrarSesion()}>${icono('log-out')}Cerrar sesión</button>`
+                  : nothing
+              }
             </div>
           </details>
           ${c.sync ? html`<span class="sync-pill"><span class="dot"></span>${c.sync}</span>` : nothing}
@@ -72,9 +93,11 @@ export function shell(c) {
           </div>
           <div class="header-actions">
             ${c.extras || nothing}
-            ${mas.length === 1
-              ? html`<button class="ghost" type="button" @click=${mas[0].onClick}>${mas[0].icono ? icono(mas[0].icono) : nothing}${mas[0].label}</button>`
-              : menu({ boton: icono('ellipsis', { tam: 18 }), etiqueta: 'Más acciones', items: mas })}
+            ${
+              mas.length === 1
+                ? html`<button class="ghost" type="button" @click=${mas[0].onClick}>${mas[0].icono ? icono(mas[0].icono) : nothing}${mas[0].label}</button>`
+                : menu({ boton: icono('ellipsis', { tam: 18 }), etiqueta: 'Más acciones', items: mas })
+            }
             ${c.accion ? html`<button class="primary" id="primaryActionBtn" type="button" aria-label=${c.accion.label} @click=${c.accion.onClick}>${icono(c.accion.icono || 'plus', { tam: 18 })}<span class="accion-label">${c.accion.label}</span></button>` : nothing}
           </div>
         </header>
