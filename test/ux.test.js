@@ -32,6 +32,14 @@ test('errores de Firebase en castellano', () => {
 });
 
 test('errores: lo nuestro pasa tal cual, el inglés no', () => {
+  // Mensaje nuestro con el código técnico al final: gana el nuestro, sin el código.
+  assert.equal(
+    mensajeError(new Error('Tu email no tiene una invitación activa. Pedile a un admin que te invite primero. (permission-denied)')),
+    'Tu email no tiene una invitación activa. Pedile a un admin que te invite primero.',
+  );
+  assert.equal(mensajeError(new Error('Ese ID ya está en uso (auth/email-already-in-use).')), 'Ese ID ya está en uso.');
+  // Pero si lo nuestro envuelve un texto en inglés, manda el código.
+  assert.match(mensajeError(new Error('No se pudo invitar (sin código): Missing or insufficient permissions.')), /^No tenés permiso/);
   assert.equal(mensajeError(new Error('Tu email no tiene una invitación activa.')), 'Tu email no tiene una invitación activa.');
   assert.equal(mensajeError(new Error('Falta el nombre del cliente')), 'Falta el nombre del cliente');
   assert.equal(mensajeError('Ya existe un estudio con ese ID'), 'Ya existe un estudio con ese ID');

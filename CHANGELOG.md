@@ -1,5 +1,25 @@
 # Cambios
 
+## 2.3.0 — 2026-10-07
+
+Calidad de ingeniería (Etapa 5). Compatible con 2.2.0.
+
+- **ESLint y Prettier compartidos**: `ribo-ui/eslint` (config "flat" con
+  reglas que apuntan a errores reales: variables e imports sin usar,
+  `alert`/`confirm`, `var`, comparaciones raras) y `ribo-ui/prettier`
+  (comillas simples, 120 columnas, y **sin tocar el contenido de los
+  templates `html`**: el espacio en blanco de un template es parte de lo
+  que se ve). El rubro instala eslint, @eslint/js, globals y prettier.
+- `toast()`: un aviso igual a uno que ya está en pantalla no se repite
+  (se le renueva el tiempo). Si diez suscripciones fallan a la vez por el
+  mismo motivo, se ve un solo aviso.
+- `mensajeError()`: un mensaje propio en castellano que trae el código
+  técnico al final ("Tu email no tiene una invitación activa…
+  (permission-denied)") se muestra tal cual, sin el código. En 2.2.0 lo
+  reemplazaba el genérico de ese código y se perdía la explicación.
+- El código de la librería pasa por ESLint y Prettier (commit aparte,
+  solo formato).
+
 ## 2.2.0 — 2026-10-07
 
 Experiencia de uso (Etapa 4). Compatible con 2.1.0: todo es nuevo y

@@ -79,9 +79,17 @@ export function codigoError(err) {
 
 // Qué pasó, en castellano, para mostrárselo a quien usa la app.
 export function mensajeError(err) {
+  const texto = (err && typeof err === 'object' ? String(err.message || '') : String(err || '')).trim();
+  // Un mensaje nuestro en castellano gana aunque traiga el código técnico
+  // entre paréntesis al final ("Tu email no tiene una invitación activa…
+  // (permission-denied)"): explica mejor que el genérico de ese código.
+  // Se muestra sin el código. Solo si el error no trae `code` propio (los
+  // de Firebase siempre lo traen, y en inglés).
+  const sinCodigos = texto.replace(/\s*\((?:[a-z]+\/)?[a-z]+(?:-[a-z]+)*\)/g, '').trim();
+  const tieneCodigoPropio = !!(err && typeof err === 'object' && err.code);
+  if (!tieneCodigoPropio && sinCodigos && CASTELLANO.test(sinCodigos) && !INGLES.test(sinCodigos)) return sinCodigos;
   const codigo = codigoError(err);
   if (MENSAJES[codigo]) return MENSAJES[codigo];
-  const texto = (err && typeof err === 'object' ? String(err.message || '') : String(err || '')).trim();
   if (texto && !codigo && (CASTELLANO.test(texto) || !INGLES.test(texto))) return texto;
   return codigo ? `${MENSAJE_INESPERADO} (código: ${codigo})` : MENSAJE_INESPERADO;
 }

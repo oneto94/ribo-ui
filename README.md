@@ -11,7 +11,7 @@ acá no rompe a nadie hasta que ese rubro sube de versión a propósito.
 ## Instalar en un rubro
 
 ```bash
-npm install github:oneto94/ribo-ui#v2.2.0
+npm install github:oneto94/ribo-ui#v2.3.0
 ```
 
 (Para probar cambios de ribo-ui antes de publicarlos: `npm install ../ribo-ui`
@@ -57,11 +57,12 @@ deploy, antes del build):
 | `validar(raiz, reglas)`, `marcarError(campo, texto)`, `limpiarErrores(raiz)` | Validación con el error debajo de cada campo. Reglas por id: `requerido`, `email`, `cuit`, `telefono`, `url`, `numero: { positivo, min, max, entero }`, `validar: (v) => 'mensaje'`; `true` usa el texto de siempre, un string lo reemplaza. Formularios `<form>` con `novalidate` (si no, el navegador muestra sus propios globos). |
 | `esEmail`, `esCuit`, `esTelefono`, `esUrl`, `errorDeCampo(valor, reglas)` | Los mismos chequeos sueltos. |
 | `conCarga(boton, accion, { error })` | Botón deshabilitado con una rueda mientras corre `accion`; se rehabilita siempre. Guardar `e.currentTarget` antes del primer `await`. |
+| `ribo-ui/eslint`, `ribo-ui/prettier` | Configuración de ESLint y Prettier de la casa. En el rubro: `eslint.config.js` con `import ribo from 'ribo-ui/eslint'; export default [...ribo];` y en `package.json` `"prettier": "ribo-ui/prettier"` (devDependencies: eslint, @eslint/js, globals, prettier). |
 | `ribo-ui/ribo.css` (= `tokens.css` + `base.css`) | Tokens (colores, escala de letra con mínimo 12px, espacios, bordes, sombras, capas) y componentes. Una tabla con clase `tarjetas` y `data-label` en cada `<td>` se ve como tarjetas en el celular. |
 
 ## Pasar un rubro de v1 a v2
 
-1. `npm install github:oneto94/ribo-ui#v2.2.0` y borrar `node_modules/.vite`.
+1. `npm install github:oneto94/ribo-ui#v2.3.0` y borrar `node_modules/.vite`.
 2. En `app.js`, reemplazar el shell armado a mano por `shell({...})` (menú con íconos, acción principal sin "+ " en el texto, acciones secundarias en `mas`, Mi Cuenta/Soporte en `menuUsuario`).
 3. Login: `${logoLoginHtml()}` arriba del eyebrow.
 4. `index.html`: copiar `THEME_BOOT_SCRIPT` (primera visita = tema del sistema). Borrar `public/favicon.svg` e `icons.svg` si son los de la plantilla de Vite.

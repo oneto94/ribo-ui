@@ -70,11 +70,21 @@ export function toast(msg, { tipo, duracion } = {}) {
   if (typeof document === 'undefined') return;
   const t = tipo || (/^\s*(no se pudo|error)/i.test(String(msg)) ? 'error' : 'info');
   const c = contenedorToasts();
+  const ms = duracion || (t === 'error' ? 7000 : 3500);
+  // El mismo aviso ya en pantalla no se repite: se le renueva el tiempo.
+  // (Si fallan diez suscripciones a la vez por el mismo motivo, se ve uno.)
+  const igual = [...c.children].find((x) => x._clave === `${t}|${msg}`);
+  if (igual) {
+    clearTimeout(igual._t);
+    igual._t = setTimeout(() => igual.remove(), ms);
+    return;
+  }
   const item = document.createElement('div');
+  item._clave = `${t}|${msg}`;
   item.className = `toast-item ${t}`;
   const cerrar = () => { clearTimeout(item._t); item.remove(); };
   render(html`${icono(ICONO_TOAST[t] || 'info', { tam: 18 })}<div class="toast-texto">${String(msg)}</div><button class="toast-cerrar" type="button" aria-label="Cerrar aviso" @click=${cerrar}>${icono('x', { tam: 16 })}</button>`, item);
   c.appendChild(item);
   while (c.children.length > MAX_TOASTS) c.firstElementChild.remove();
-  item._t = setTimeout(cerrar, duracion || (t === 'error' ? 7000 : 3500));
+  item._t = setTimeout(cerrar, ms);
 }
